@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.002
+Yet Yahtzee ver 0.003
 
-Ru only, sorry
+Sorry some txt on Ru only
+
 """
+from random import randint
+
 
 print("Yet Yahtzee")
 
@@ -59,7 +62,7 @@ Chance - сумма выпавших кубиков, любая комбинац
 
 def Board():
     print("""
-name                   Player1         Player2     (R)Roll the dice
+name                   Player1         Player2
 
 (1)Ones 
 (2)Twos 
@@ -78,8 +81,22 @@ Bonus
 (C)Chance
 
 Total:
-    """)
 
-help_me = Board
+(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice""")
 
-help_me()
+
+def dice6d(self):
+    #Игровой кубик с 6-ю гранями
+    print("Бросим кости")
+    dice_number = randint(1,6)
+    return dice_number
+
+
+choice = Board
+
+
+x = True
+while x:
+    choice()
+    break
+
