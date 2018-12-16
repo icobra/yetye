@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.007
+Yet Yahtzee ver 0.008
 
 Sorry some txt on Ru only
 
@@ -9,11 +9,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.007")
-
-# List of avalibal action, keys to dictonary
-action_list = ('1', '2', '3', '4', '5', '6', 'T', 'F', 'H', 'S',
-    'L', 'Y', 'C', 'W', 'Q', 'P', 'R') 
+print("Yet Yahtzee version 0.008")
 
 def watch_game_rules():
     print("""
@@ -151,7 +147,7 @@ choice()
 while True:
     print("Make you choice...")
     choice = getch().upper()
-    if choice in action_list:
+    if choice in action_dict.keys():
         print(choice)
         plzwork = action_dict[choice]
         plzwork()
