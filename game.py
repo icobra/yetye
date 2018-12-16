@@ -1,17 +1,21 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.003
+Yet Yahtzee ver 0.007
 
 Sorry some txt on Ru only
 
 """
 from random import randint
+from getch import getch
 
+print("Yet Yahtzee version 0.007")
 
-print("Yet Yahtzee")
+# List of avalibal action, keys to dictonary
+action_list = ('1', '2', '3', '4', '5', '6', 'T', 'F', 'H', 'S',
+    'L', 'Y', 'C', 'W', 'Q', 'P', 'R') 
 
-def Rules():
+def watch_game_rules():
     print("""
                    Правила игры в Yahtzee.
 
@@ -61,8 +65,8 @@ Chance - сумма выпавших кубиков, любая комбинац
         """)
 
 def Board():
-    print("""
-name                   Player1         Player2
+    # Main screen
+    print("""name                   Player1         Player2
 
 (1)Ones 
 (2)Twos 
@@ -85,18 +89,72 @@ Total:
 (W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice""")
 
 
-def dice6d(self):
-    #Игровой кубик с 6-ю гранями
-    print("Бросим кости")
+def check_it():
+    print ("a, v bbbbbbc")
+
+def three_of_kind():
+    pass
+
+def four_of_kind():
+    pass
+
+def full_hous():
+    pass
+
+def small_straight():
+    pass
+
+def large_straight():
+    pass
+
+def yahtzee():
+    pass
+
+def chance():
+    pass
+
+def quit():
+    print("Thank you. Take a good day.")
+    exit()
+
+def put_aside():
+    pass
+
+
+def roll_dice6d(self):
+    #Game dice 6d
+    print("Roll the dice...")
     dice_number = randint(1,6)
     return dice_number
 
+action_dict = {'1': check_it,
+                '2': check_it,
+                '3': check_it,
+                '4': check_it,
+                '5': check_it,
+                '6': check_it,
+                'T': three_of_kind,
+                'F': four_of_kind,
+                'H': full_hous,
+                'S': small_straight,
+                'L': large_straight,
+                'Y': yahtzee,
+                'C': chance,
+                'W': watch_game_rules,
+                'Q': quit,
+                'P': put_aside,
+                'R': roll_dice6d}
 
 choice = Board
+choice()
 
-
-x = True
-while x:
-    choice()
-    break
-
+while True:
+    print("Make you choice...")
+    choice = getch().upper()
+    if choice in action_list:
+        print(choice)
+        plzwork = action_dict[choice]
+        plzwork()
+        print("Тадамсь")
+    else:
+        print("Enter avalibal command")
