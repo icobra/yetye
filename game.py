@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.008
+Yet Yahtzee ver 0.009
 
 Sorry some txt on Ru only
 
@@ -9,7 +9,32 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.008")
+print("Yet Yahtzee version 0.009")
+
+# Important variable
+gamestat_dict = {
+    'count_of_dice': 5,
+    'try_roll': 1,
+    'dice_hold':[],
+    'new_dice':[],
+    'dice_list':[],
+    'Ones': None,
+    'Twos': None, 
+    'Threes': None,
+    'Fours': None,
+    'Fives': None,
+    'Sixes': None,
+    'Bonus': None,
+    'three_kind': None,
+    'four_kind': None,
+    'full_hous': None,
+    'sstraight': None,
+    'lstraight': None,
+    'yacht': None,
+    'chance': None,
+    'Total': None
+}
+
 
 def watch_game_rules():
     print("""
@@ -60,10 +85,9 @@ Chance - сумма выпавших кубиков, любая комбинац
 
         """)
 
-def Board():
+def board():
     # Main screen
     print("""name                   Player1         Player2
-
 (1)Ones 
 (2)Twos 
 (3)Threes
@@ -80,9 +104,8 @@ Bonus
 (Y)Yahtzee
 (C)Chance
 
-Total:
-
-(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice""")
+Total:""")
+    print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
 
 
 def check_it():
@@ -117,11 +140,16 @@ def put_aside():
     pass
 
 
-def roll_dice6d(self):
+def roll_dice6d(gdict = gamestat_dict):
     #Game dice 6d
-    print("Roll the dice...")
-    dice_number = randint(1,6)
-    return dice_number
+    number = gdict['count_of_dice']
+    print("Roll the dices...")
+    dice_list = []
+    for i in range(0, number):
+        dice_number = randint(1,6)
+        dice_list.append(dice_number)
+    print(dice_list)    
+    return dice_list
 
 action_dict = {'1': check_it,
                 '2': check_it,
@@ -140,17 +168,14 @@ action_dict = {'1': check_it,
                 'Q': quit,
                 'P': put_aside,
                 'R': roll_dice6d}
-
-choice = Board
-choice()
-
+board()
 while True:
     print("Make you choice...")
     choice = getch().upper()
     if choice in action_dict.keys():
         print(choice)
-        plzwork = action_dict[choice]
-        plzwork()
-        print("Тадамсь")
+        choice = action_dict[choice]
+        board()
+        choice()
     else:
         print("Enter avalibal command")
