@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.009
+Yet Yahtzee ver 0.0010
 
 Sorry some txt on Ru only
 
@@ -9,12 +9,13 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.009")
+print("Yet Yahtzee version 0.0010")
 
 # Important variable
 gamestat_dict = {
+    'semaphore': 0,
     'count_of_dice': 5,
-    'try_roll': 1,
+    'try_roll': 0,
     'dice_hold':[],
     'new_dice':[],
     'dice_list':[],
@@ -34,7 +35,6 @@ gamestat_dict = {
     'chance': None,
     'Total': None
 }
-
 
 def watch_game_rules():
     print("""
@@ -106,6 +106,8 @@ Bonus
 
 Total:""")
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
+    print("Current dice: %s" % gamestat_dict['dice_list'])
+#    print(gamestat_dict['dice_list']) 
 
 
 def check_it():
@@ -136,20 +138,25 @@ def quit():
     print("Thank you. Take a good day.")
     exit()
 
-def put_aside():
+def put_aside(gdict = gamestat_dict):
+    #Hold some dice
     pass
 
 
 def roll_dice6d(gdict = gamestat_dict):
     #Game dice 6d
     number = gdict['count_of_dice']
+    try_roll = gdict['try_roll']
     print("Roll the dices...")
     dice_list = []
     for i in range(0, number):
         dice_number = randint(1,6)
         dice_list.append(dice_number)
-    print(dice_list)    
-    return dice_list
+    print(dice_list)
+    try_roll += 1
+    gdict['try_roll'] = try_roll
+    gdict['dice_list'] = dice_list
+    print(try_roll)
 
 action_dict = {'1': check_it,
                 '2': check_it,
@@ -172,7 +179,17 @@ board()
 while True:
     print("Make you choice...")
     choice = getch().upper()
-    if choice in action_dict.keys():
+    if choice == 'R': #and Put asaide? 
+        if gamestat_dict['try_roll'] == 3:
+            board()
+            print("Make choice. No more dice rolls this turn.")            
+        else:
+            print(choice)
+            choice = action_dict[choice]
+            # board()
+            choice()
+            board()
+    elif choice in action_dict.keys():
         print(choice)
         choice = action_dict[choice]
         board()
