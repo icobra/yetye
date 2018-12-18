@@ -106,7 +106,7 @@ Bonus
 
 Total:""")
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
-    print("Current dice: %s" % gamestat_dict['dice_list'])
+    print("Current dice: {}".format (gamestat_dict['dice_list']))
 #    print(gamestat_dict['dice_list']) 
 
 
@@ -139,8 +139,36 @@ def quit():
     exit()
 
 def put_aside(gdict = gamestat_dict):
-    #Hold some dice
-    pass
+    #Put aside some dice if possible
+    hold_dice = gamestat_dict['dice_list']
+    x = len(hold_dice)
+    if x > 0:
+        print("\nYou can put aside some dice.\n")
+        print("Current dices:    {}".format (hold_dice))
+        x += 1
+        number_list = list(range(1, x))
+        print("Number of dices:  {}".format (number_list))
+        print("Enter the numbers of the dices through the space to remove them.\
+               \nEnter the space - hold all dices.")
+#TODO
+"""
+# Прототип для вырезания
+a = [2, 6, 2, 2, 3]
+b = [4, 1]
+x = len(b)
+print(x)
+
+while x > 0:
+    print(a.pop(b[0]))
+#    if len(b) > 0:
+    b.pop(0)
+    x -= 1
+
+print(a)
+"""
+
+    else:
+        print("You can't hold something.")
 
 
 def roll_dice6d(gdict = gamestat_dict):
