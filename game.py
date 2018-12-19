@@ -9,23 +9,22 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0011")
+print("Yet Yahtzee version 0.0011 ")
 
 # Important variable
 gamestat_dict = {
     'semaphore': 0,
-    'count_of_dice': 5,
     'try_roll': 0,
     'dice_hold':[],
     'new_dice':[],
     'dice_list':[],
-    'Ones': None,
-    'Twos': None, 
-    'Threes': None,
-    'Fours': None,
-    'Fives': None,
-    'Sixes': None,
-    'Bonus': None,
+    'ones': None,
+    'twos': None, 
+    'threes': None,
+    'fours': None,
+    'fives': None,
+    'sixes': None,
+    'bonus': None,
     'three_kind': None,
     'four_kind': None,
     'full_hous': None,
@@ -33,7 +32,7 @@ gamestat_dict = {
     'lstraight': None,
     'yacht': None,
     'chance': None,
-    'Total': None
+    'total': None
 }
 
 def watch_game_rules():
@@ -87,14 +86,14 @@ Chance - сумма выпавших кубиков, любая комбинац
 
 def board():
     # Main screen
-    print("""name                   Player1         Player2
-(1)Ones 
-(2)Twos 
-(3)Threes
-(4)Fours
-(5)Fives
-(6)Sixes
-Bonus
+    print("name                   Player1         Player2")
+    print("(1)Ones                  %s" % gamestat_dict['ones'])
+    print("(2)Twos                  %s" % gamestat_dict['twos'])
+    print("(3)Threes                %s" % gamestat_dict['threes'])
+    print("(4)Fours                 %s" % gamestat_dict['fours'])
+    print("(5)Fives                 %s" % gamestat_dict['fives'])
+    print("(6)Sixes                 %s" % gamestat_dict['sixes'])
+    print("""Bonus
 
 (T)Three of a kind
 (F)Four of a kind
@@ -155,7 +154,7 @@ def put_aside(gdict = gamestat_dict):
         user_choice = sorted(user_choice)
         print(user_choice)
         y = len(user_choice)
-        if y > x:
+        if y > x or y == 0:
             print("You can't remove more dices than you have.")
         while y > 0:
             hold_dice.pop((int(user_choice.pop()))-1)
@@ -166,17 +165,18 @@ def put_aside(gdict = gamestat_dict):
 
 def roll_dice6d(gdict = gamestat_dict):
     #Game dice 6d
-    number = gdict['count_of_dice']
+    number = 5 - len(gdict['dice_list'])
     try_roll = gdict['try_roll']
     print("Roll the dices...")
-    dice_list = []
+    new_list = []
     for i in range(0, number):
         dice_number = randint(1,6)
-        dice_list.append(dice_number)
-    print(dice_list)
+        new_list.append(dice_number)
+    print(new_list)
     try_roll += 1
     gdict['try_roll'] = try_roll
-    gdict['dice_list'] = dice_list
+    gdict['dice_list'] = gdict['dice_list'] + new_list
+    print(gdict['dice_list'])
     print(try_roll)
 
 action_dict = {'1': check_it,
@@ -200,7 +200,7 @@ board()
 while True:
     print("Make you choice...")
     choice = getch().upper()
-    if choice == 'R': #and Put asaide? 
+    if choice == 'R' or choice == 'P': 
         if gamestat_dict['try_roll'] == 3:
             board()
             print("Make choice. No more dice rolls this turn.")            
