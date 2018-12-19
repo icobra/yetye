@@ -121,6 +121,81 @@ def check_it(gdict = gamestat_dict):
     gdict['try_roll'] = 0
     gdict['dice_list'] = []
 
+def check_it2(gdict = gamestat_dict):
+    if gdict['twos'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        if x == 2:
+            y += 2
+    if y >= 6:
+        gdict['twos'] = 6
+    else:
+        gdict['twos'] = 0
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []
+
+def check_it3(gdict = gamestat_dict):
+    if gdict['threes'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        if x == 3:
+            y += 3
+    if y >= 9:
+        gdict['threes'] = 9
+    else:
+        gdict['threes'] = 0
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []
+
+def check_it4(gdict = gamestat_dict):
+    if gdict['fours'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        if x == 4:
+            y += 4
+    if y >= 12:
+        gdict['fours'] = 4
+    else:
+        gdict['fours'] = 12
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []
+
+def check_it5(gdict = gamestat_dict):
+    if gdict['fives'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        if x == 5:
+            y += 5
+    if y >= 15:
+        gdict['fives'] = 15
+    else:
+        gdict['fives'] = 0
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []
+
+def check_it6(gdict = gamestat_dict):
+    if gdict['sixes'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        if x == 6:
+            y += 18
+    if y >= 18:
+        gdict['sixes'] = 18
+    else:
+        gdict['sixes'] = 0
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []
+
 def three_of_kind():
     pass
 
@@ -195,11 +270,11 @@ def roll_dice6d(gdict = gamestat_dict):
     print(try_roll)
 
 action_dict = {'1': check_it,
-                '2': check_it,
-                '3': check_it,
-                '4': check_it,
-                '5': check_it,
-                '6': check_it,
+                '2': check_it2,
+                '3': check_it3,
+                '4': check_it4,
+                '5': check_it5,
+                '6': check_it6,
                 'T': three_of_kind,
                 'F': four_of_kind,
                 'H': full_hous,
