@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.0012
+Yet Yahtzee ver 0.0020
 
 Sorry some txt on Ru only
 
@@ -9,7 +9,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0012")
+print("Yet Yahtzee version 0.0020")
 
 # Important variable
 gamestat_dict = {
@@ -98,101 +98,29 @@ def board():
 (H)Full Hous
 (S)Small Straight
 (L)Large Straight
-(Y)Yahtzee
-(C)Chance
-
-Total:""")
+(Y)Yahtzee""")
+    print("(C)Chance                %s" % gamestat_dict['chance'])
+    print("")
+    print("Total: ")
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
     print("Current dice: {}".format (gamestat_dict['dice_list']))
-#    print(gamestat_dict['dice_list']) 
 
-def check_it(gdict = gamestat_dict):
-    if gdict['ones'] != None:
+def check_it(check_number, gdict = gamestat_dict):
+    print(check_number)
+    check_dict = {"1": 'ones',"2": 'twos',"3": 'threes',
+                 "4":'fours',"5": 'fives',"6": 'sixes'}
+    key_word = check_dict[str(check_number)]             
+    if gdict[key_word] != None:
         print("Sorry, but this field is not empty.")
         return
     y = 0    
     for x in gdict['dice_list']:
-        if x == 1:
+        if x == check_number:
             y += 1
     if y >= 3:
-        gdict['ones'] = 3
+        gdict[key_word] = 3 * check_number
     else:
-        gdict['ones'] = 0
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []
-
-def check_it2(gdict = gamestat_dict):
-    if gdict['twos'] != None:
-        print("Sorry, but this field is not empty.")
-        return
-    y = 0    
-    for x in gdict['dice_list']:
-        if x == 2:
-            y += 2
-    if y >= 6:
-        gdict['twos'] = 6
-    else:
-        gdict['twos'] = 0
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []
-
-def check_it3(gdict = gamestat_dict):
-    if gdict['threes'] != None:
-        print("Sorry, but this field is not empty.")
-        return
-    y = 0    
-    for x in gdict['dice_list']:
-        if x == 3:
-            y += 3
-    if y >= 9:
-        gdict['threes'] = 9
-    else:
-        gdict['threes'] = 0
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []
-
-def check_it4(gdict = gamestat_dict):
-    if gdict['fours'] != None:
-        print("Sorry, but this field is not empty.")
-        return
-    y = 0    
-    for x in gdict['dice_list']:
-        if x == 4:
-            y += 4
-    if y >= 12:
-        gdict['fours'] = 12
-    else:
-        gdict['fours'] = 0
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []
-
-def check_it5(gdict = gamestat_dict):
-    if gdict['fives'] != None:
-        print("Sorry, but this field is not empty.")
-        return
-    y = 0    
-    for x in gdict['dice_list']:
-        if x == 5:
-            y += 5
-    if y >= 15:
-        gdict['fives'] = 15
-    else:
-        gdict['fives'] = 0
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []
-
-def check_it6(gdict = gamestat_dict):
-    if gdict['sixes'] != None:
-        print("Sorry, but this field is not empty.")
-        return
-    y = 0    
-    for x in gdict['dice_list']:
-        if x == 6:
-            y += 18
-    if y >= 18:
-        gdict['sixes'] = 18
-    else:
-        gdict['sixes'] = 0
+        gdict[key_word] = 0
     gdict['try_roll'] = 0
     gdict['dice_list'] = []
 
@@ -270,11 +198,11 @@ def roll_dice6d(gdict = gamestat_dict):
     print(try_roll)
 
 action_dict = {'1': check_it,
-                '2': check_it2,
-                '3': check_it3,
-                '4': check_it4,
-                '5': check_it5,
-                '6': check_it6,
+                '2': check_it,
+                '3': check_it,
+                '4': check_it,
+                '5': check_it,
+                '6': check_it,
                 'T': three_of_kind,
                 'F': four_of_kind,
                 'H': full_hous,
@@ -302,6 +230,11 @@ while True:
             # board()
             choice()
             board()
+    elif choice in ['1', '2', '3', '4', '5', '6']:
+        check_number = int(choice)
+        choice = action_dict[choice]
+        choice(check_number)
+        board()
     elif choice in action_dict.keys():
         print(choice)
         choice = action_dict[choice]
