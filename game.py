@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.0011
+Yet Yahtzee ver 0.0012
 
 Sorry some txt on Ru only
 
@@ -9,14 +9,12 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0011 ")
+print("Yet Yahtzee version 0.0012")
 
 # Important variable
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
-    'dice_hold':[],
-    'new_dice':[],
     'dice_list':[],
     'ones': None,
     'twos': None, 
@@ -108,9 +106,20 @@ Total:""")
     print("Current dice: {}".format (gamestat_dict['dice_list']))
 #    print(gamestat_dict['dice_list']) 
 
-
-def check_it():
-    print ("a, v bbbbbbc")
+def check_it(gdict = gamestat_dict):
+    if gdict['ones'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        if x == 1:
+            y += 1
+    if y >= 3:
+        gdict['ones'] = 3
+    else:
+        gdict['ones'] = 0
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []
 
 def three_of_kind():
     pass
@@ -130,8 +139,14 @@ def large_straight():
 def yahtzee():
     pass
 
-def chance():
-    pass
+def chance(gdict = gamestat_dict):
+    if gdict['chance'] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gdict['dice_list']:
+        y += x
+    gdict['chance'] = y
 
 def quit():
     print("Thank you. Take a good day.")
@@ -195,7 +210,9 @@ action_dict = {'1': check_it,
                 'W': watch_game_rules,
                 'Q': quit,
                 'P': put_aside,
-                'R': roll_dice6d}
+                'R': roll_dice6d
+}
+
 board()
 while True:
     print("Make you choice...")
@@ -215,5 +232,6 @@ while True:
         choice = action_dict[choice]
         board()
         choice()
+        board()
     else:
         print("Enter avalibal command")
