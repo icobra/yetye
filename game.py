@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.0010
+Yet Yahtzee ver 0.0011
 
 Sorry some txt on Ru only
 
@@ -9,7 +9,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0010")
+print("Yet Yahtzee version 0.0011")
 
 # Important variable
 gamestat_dict = {
@@ -148,28 +148,21 @@ def put_aside(gdict = gamestat_dict):
         x += 1
         number_list = list(range(1, x))
         print("Number of dices:  {}".format (number_list))
-        print("Enter the numbers of the dices through the space to remove them.\
-               \nEnter the space - hold all dices.")
-#TODO
-"""
-# Прототип для вырезания
-a = [2, 6, 2, 2, 3]
-b = [4, 1]
-x = len(b)
-print(x)
-
-while x > 0:
-    print(a.pop(b[0]))
-#    if len(b) > 0:
-    b.pop(0)
-    x -= 1
-
-print(a)
-"""
-
+        print("Enter the numbers of the dices through the space to remove them.")
+        user_choice = (input("Enter the space - hold all dices....")).strip()
+        user_choice = user_choice.split(" ")
+        print(user_choice)
+        user_choice = sorted(user_choice)
+        print(user_choice)
+        y = len(user_choice)
+        if y > x:
+            print("You can't remove more dices than you have.")
+        while y > 0:
+            hold_dice.pop((int(user_choice.pop()))-1)
+            y -= 1
+        print(hold_dice)
     else:
-        print("You can't hold something.")
-
+        print("You can't hold something.")    
 
 def roll_dice6d(gdict = gamestat_dict):
     #Game dice 6d
