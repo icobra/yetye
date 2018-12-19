@@ -160,9 +160,9 @@ def check_it4(gdict = gamestat_dict):
         if x == 4:
             y += 4
     if y >= 12:
-        gdict['fours'] = 4
-    else:
         gdict['fours'] = 12
+    else:
+        gdict['fours'] = 0
     gdict['try_roll'] = 0
     gdict['dice_list'] = []
 
