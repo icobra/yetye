@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.0020
+Yet Yahtzee ver 0.0100
 
 Sorry some txt on Ru only
 
@@ -9,28 +9,28 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0020")
+print("Yet Yahtzee version 0.0100")
 
 # Important variable
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
     'dice_list':[],
-    'ones': None,
-    'twos': None, 
-    'threes': None,
-    'fours': None,
-    'fives': None,
-    'sixes': None,
-    'bonus': None,
-    'three_kind': None,
-    'four_kind': None,
-    'full_hous': None,
-    'sstraight': None,
-    'lstraight': None,
-    'yacht': None,
-    'chance': None,
-    'total': None
+    'ones': [None, None],
+    'twos': [None, None], 
+    'threes': [None, None],
+    'fours': [None, None],
+    'fives': [None, None],
+    'sixes': [None, None],
+    'bonus': [None, None],
+    'three_kind': [None, None],
+    'four_kind': [None, None],
+    'full_hous': [None, None],
+    'sstraight': [None, None],
+    'lstraight': [None, None],
+    'yacht': [None, None],
+    'chance': [None, None],
+    'total': [None, None],
 }
 
 def watch_game_rules():
@@ -84,8 +84,11 @@ Chance - сумма выпавших кубиков, любая комбинац
 
 def board():
     # Main screen
-    print("name                   Player1         Player2")
-    print("(1)Ones                  %s" % gamestat_dict['ones'])
+    if gamestat_dict['semaphore'] == 0:
+        print("name                   *Player1         Player2")
+    else:
+        print("name                   Player1         *Player2")
+    print("(1)Ones                  %s" % gamestat_dict['ones'][0])
     print("(2)Twos                  %s" % gamestat_dict['twos'])
     print("(3)Threes                %s" % gamestat_dict['threes'])
     print("(4)Fours                 %s" % gamestat_dict['fours'])
@@ -123,6 +126,7 @@ def check_it(check_number, gdict = gamestat_dict):
         gdict[key_word] = 0
     gdict['try_roll'] = 0
     gdict['dice_list'] = []
+    next_player()
 
 def three_of_kind():
     pass
@@ -196,6 +200,12 @@ def roll_dice6d(gdict = gamestat_dict):
     gdict['dice_list'] = gdict['dice_list'] + new_list
     print(gdict['dice_list'])
     print(try_roll)
+
+def next_player():
+    if gamestat_dict['semaphore'] == 0:
+        gamestat_dict['semaphore'] = 1
+    else:
+        gamestat_dict['semaphore'] = 0
 
 action_dict = {'1': check_it,
                 '2': check_it,
