@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.0100
+Yet Yahtzee ver 0.0200
 
 Sorry some txt on Ru only
 
@@ -9,7 +9,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0100")
+print("Yet Yahtzee version 0.0200")
 
 # Important variable
 gamestat_dict = {
@@ -145,7 +145,22 @@ def large_straight():
     pass
 
 def yahtzee():
-    pass
+    position = int(gamestat_dict['semaphore'])
+    check_number = gamestat_dict['dice_list'][0]             
+    if gamestat_dict['yacht'][position] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0    
+    for x in gamestat_dict['dice_list']:
+        if x == check_number:
+            y += 1
+    if y == 5:
+        gamestat_dict['yacht'][position] = 50
+    else:
+        gamestat_dict['yacht'][position] = 0
+    gamestat_dict['try_roll'] = 0
+    gamestat_dict['dice_list'] = []
+    next_player()
 
 def chance(gdict = gamestat_dict):
     if gdict['chance'] != None:
