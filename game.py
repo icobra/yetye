@@ -17,7 +17,7 @@ gamestat_dict = {
     'try_roll': 0,
     'dice_list':[],
     'ones': [None, None],
-    'twos': [None, None], 
+    'twos': [None, None],
     'threes': [None, None],
     'fours': [None, None],
     'fives': [None, None],
@@ -88,21 +88,21 @@ def board():
         print("name                   *Player1         Player2")
     else:
         print("name                   Player1         *Player2")
-    print("(1)Ones                  %s" % gamestat_dict['ones'][0])
-    print("(2)Twos                  %s" % gamestat_dict['twos'])
-    print("(3)Threes                %s" % gamestat_dict['threes'])
-    print("(4)Fours                 %s" % gamestat_dict['fours'])
-    print("(5)Fives                 %s" % gamestat_dict['fives'])
-    print("(6)Sixes                 %s" % gamestat_dict['sixes'])
-    print("""Bonus
-
-(T)Three of a kind
-(F)Four of a kind
-(H)Full Hous
-(S)Small Straight
-(L)Large Straight
-(Y)Yahtzee""")
-    print("(C)Chance                %s" % gamestat_dict['chance'])
+    print("(1)Ones                  %s            %s" % (gamestat_dict['ones'][0], gamestat_dict['ones'][1]))
+    print("(2)Twos                  %s            %s" % (gamestat_dict['twos'][0], gamestat_dict['twos'][1]))
+    print("(3)Threes                %s            %s" % (gamestat_dict['threes'][0], gamestat_dict['threes'][1]))
+    print("(4)Fours                 %s            %s" % (gamestat_dict['fours'][0], gamestat_dict['fours'][1]))
+    print("(5)Fives                 %s            %s" % (gamestat_dict['fives'][0], gamestat_dict['fives'][1]))
+    print("(6)Sixes                 %s            %s" % (gamestat_dict['sixes'][0], gamestat_dict['sixes'][1]))
+    print("   Bonus                 %s            %s" % (gamestat_dict['bonus'][0], gamestat_dict['bonus'][1]))
+    print("\n")
+    print("(T)Three of a kind       %s            %s" % (gamestat_dict['three_kind'][0], gamestat_dict['three_kind'][1]))
+    print("(F)Four of a kind        %s            %s" % (gamestat_dict['four_kind'][0], gamestat_dict['four_kind'][1]))
+    print("(H)Full Hous             %s            %s" % (gamestat_dict['full_hous'][0], gamestat_dict['full_hous'][1]))
+    print("(S)Small Straight        %s            %s" % (gamestat_dict['sstraight'][0], gamestat_dict['sstraight'][1]))
+    print("(L)Large Straight        %s            %s" % (gamestat_dict['lstraight'][0], gamestat_dict['lstraight'][1]))
+    print("(Y)Yahtzee               %s            %s" % (gamestat_dict['yacht'][0], gamestat_dict['yacht'][1]))
+    print("(C)Chance                %s            %s" % (gamestat_dict['chance'][0], gamestat_dict['chance'][1]))
     print("")
     print("Total: ")
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
@@ -112,8 +112,9 @@ def check_it(check_number, gdict = gamestat_dict):
     print(check_number)
     check_dict = {"1": 'ones',"2": 'twos',"3": 'threes',
                  "4":'fours',"5": 'fives',"6": 'sixes'}
-    key_word = check_dict[str(check_number)]             
-    if gdict[key_word] != None:
+    key_word = check_dict[str(check_number)]
+    position = int(gamestat_dict['semaphore'])             
+    if gdict[key_word][position] != None:
         print("Sorry, but this field is not empty.")
         return
     y = 0    
@@ -121,9 +122,9 @@ def check_it(check_number, gdict = gamestat_dict):
         if x == check_number:
             y += 1
     if y >= 3:
-        gdict[key_word] = 3 * check_number
+        gdict[key_word][position] = 3 * check_number
     else:
-        gdict[key_word] = 0
+        gdict[key_word][position] = 0
     gdict['try_roll'] = 0
     gdict['dice_list'] = []
     next_player()
@@ -228,7 +229,10 @@ action_dict = {'1': check_it,
 
 board()
 while True:
-    print("Make you choice...")
+    if gamestat_dict['semaphore'] == 0:
+        print("Player1, Make you choice...")
+    else:
+        print("Player2, Make you choice...")
     choice = getch().upper()
     if choice == 'R' or choice == 'P': 
         if gamestat_dict['try_roll'] == 3:
