@@ -1,15 +1,14 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee ver 0.0200
-
+Yet Yahtzee
 Sorry some txt on Ru only
-
 """
+
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.0200")
+print("Yet Yahtzee version 0.5")
 
 # Important variable
 gamestat_dict = {
@@ -95,7 +94,7 @@ def board():
     print("(5)Fives                 %s            %s" % (gamestat_dict['fives'][0], gamestat_dict['fives'][1]))
     print("(6)Sixes                 %s            %s" % (gamestat_dict['sixes'][0], gamestat_dict['sixes'][1]))
     print("   Bonus                 %s            %s" % (gamestat_dict['bonus'][0], gamestat_dict['bonus'][1]))
-    print("\n")
+    print("")
     print("(T)Three of a kind       %s            %s" % (gamestat_dict['three_kind'][0], gamestat_dict['three_kind'][1]))
     print("(F)Four of a kind        %s            %s" % (gamestat_dict['four_kind'][0], gamestat_dict['four_kind'][1]))
     print("(H)Full Hous             %s            %s" % (gamestat_dict['full_hous'][0], gamestat_dict['full_hous'][1]))
@@ -130,7 +129,31 @@ def check_it(check_number, gdict = gamestat_dict):
     next_player()
 
 def three_of_kind():
-    pass
+    new_list = gamestat_dict['dice_list']
+    position = int(gamestat_dict['semaphore'])
+    print("Тут")
+    if gamestat_dict['three_kind'][position] != None:
+        print("Sorry, but this field is not empty.")
+        print("цикл")
+        return
+    y = 0
+    print("поехали")    
+    for x in range(1,7):
+        if new_list.count(x) >= 3:
+            y = x
+            print("хм")
+            break
+    print(y)            
+    if y > 0:
+        print("Может здесь")
+        gamestat_dict['three_kind'][position] = sum(new_list)
+        print(sum(new_list))
+        print("Сумма")
+    else:
+        gamestat_dict['three_kind'][position] = 0    
+    gamestat_dict['try_roll'] = 0
+    gamestat_dict['dice_list'] = []
+    next_player()
 
 def four_of_kind():
     pass
@@ -163,13 +186,17 @@ def yahtzee():
     next_player()
 
 def chance(gdict = gamestat_dict):
-    if gdict['chance'] != None:
+    position = int(gamestat_dict['semaphore'])
+    if gdict['chance'][position] != None:
         print("Sorry, but this field is not empty.")
         return
     y = 0    
     for x in gdict['dice_list']:
         y += x
-    gdict['chance'] = y
+    gdict['chance'][position] = y
+    gamestat_dict['try_roll'] = 0
+    gamestat_dict['dice_list'] = []
+    next_player()    
 
 def quit():
     print("Thank you. Take a good day.")
@@ -222,6 +249,9 @@ def next_player():
         gamestat_dict['semaphore'] = 1
     else:
         gamestat_dict['semaphore'] = 0
+
+def total():
+    pass
 
 action_dict = {'1': check_it,
                 '2': check_it,
