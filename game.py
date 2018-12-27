@@ -8,7 +8,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.7")
+print("Yet Yahtzee version 0.75")
 
 # Important variable
 gamestat_dict = {
@@ -184,7 +184,37 @@ def full_hous():
     next_player()
 
 def small_straight():
-    pass
+    position = int(gamestat_dict['semaphore'])
+    new_list = gamestat_dict['dice_list']
+    new_list = sorted(new_list)
+    new_list.pop()
+    y = new_list[0]
+    new_list.pop(0)
+    for x in new_list:
+        if x == y + 1:
+            y += 1
+        else:
+            y = 0
+            break
+    if y > 0:
+        gamestat_dict['sstraight'][position] = 30
+    else:
+        new_list = gamestat_dict['dice_list']
+        new_list = sorted(new_list)
+        new_list.pop(0)
+        y = new_list[0]
+        new_list.pop(0)
+        for x in new_list:
+            if x == y +1:
+                y += 1
+            else:
+                y = 0
+                break
+        if y > 0:
+            gamestat_dict['sstraight'][position] = 30
+        else:    
+            gamestat_dict['sstraight'][position] = 0
+    next_player()                         
 
 def large_straight():
     pass
