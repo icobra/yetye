@@ -14,7 +14,7 @@ print("Yet Yahtzee version 0.6")
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
-    'dice_list':[4,4,4,4,4],
+    'dice_list':[6,6,6,6,6],
     'ones': [None, None],
     'twos': [None, None],
     'threes': [None, None],
@@ -124,8 +124,6 @@ def check_it(check_number, gdict = gamestat_dict):
         gdict[key_word][position] = 3 * check_number
     else:
         gdict[key_word][position] = 0
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []
     next_player()
 
 def three_of_kind():
@@ -143,8 +141,6 @@ def three_of_kind():
         gamestat_dict['three_kind'][position] = sum(new_list)
     else:
         gamestat_dict['three_kind'][position] = 0    
-    gamestat_dict['try_roll'] = 0
-    gamestat_dict['dice_list'] = []
     next_player()
 
 def four_of_kind():
@@ -162,8 +158,6 @@ def four_of_kind():
         gamestat_dict['four_kind'][position] = sum(new_list)
     else:
         gamestat_dict['four_kind'][position] = 0    
-    gamestat_dict['try_roll'] = 0
-    gamestat_dict['dice_list'] = []
     next_player()
 
 def full_hous():
@@ -183,8 +177,6 @@ def full_hous():
         gamestat_dict['full_hous'][position] = 25
     else:
         gamestat_dict['full_hous'][position] = 0    
-    gamestat_dict['try_roll'] = 0
-    gamestat_dict['dice_list'] = []
     next_player()
 
 def small_straight():
@@ -207,8 +199,6 @@ def yahtzee():
         gamestat_dict['yacht'][position] = 50
     else:
         gamestat_dict['yacht'][position] = 0
-    gamestat_dict['try_roll'] = 0
-    gamestat_dict['dice_list'] = []
     next_player()
 
 def chance(gdict = gamestat_dict):
@@ -220,8 +210,6 @@ def chance(gdict = gamestat_dict):
     for x in gdict['dice_list']:
         y += x
     gdict['chance'][position] = y
-    gamestat_dict['try_roll'] = 0
-    gamestat_dict['dice_list'] = []
     next_player()    
 
 def quit():
@@ -271,6 +259,8 @@ def roll_dice6d(gdict = gamestat_dict):
     print(try_roll)
 
 def next_player():
+    gdict['try_roll'] = 0
+    gdict['dice_list'] = []    
     if gamestat_dict['semaphore'] == 0:
         gamestat_dict['semaphore'] = 1
     else:
