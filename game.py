@@ -8,13 +8,13 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.5")
+print("Yet Yahtzee version 0.6")
 
 # Important variable
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
-    'dice_list':[],
+    'dice_list':[4,4,4,4,4],
     'ones': [None, None],
     'twos': [None, None],
     'threes': [None, None],
@@ -131,24 +131,16 @@ def check_it(check_number, gdict = gamestat_dict):
 def three_of_kind():
     new_list = gamestat_dict['dice_list']
     position = int(gamestat_dict['semaphore'])
-    print("Тут")
     if gamestat_dict['three_kind'][position] != None:
         print("Sorry, but this field is not empty.")
-        print("цикл")
         return
     y = 0
-    print("поехали")    
     for x in range(1,7):
         if new_list.count(x) >= 3:
             y = x
-            print("хм")
-            break
-    print(y)            
+            break       
     if y > 0:
-        print("Может здесь")
         gamestat_dict['three_kind'][position] = sum(new_list)
-        print(sum(new_list))
-        print("Сумма")
     else:
         gamestat_dict['three_kind'][position] = 0    
     gamestat_dict['try_roll'] = 0
@@ -156,10 +148,44 @@ def three_of_kind():
     next_player()
 
 def four_of_kind():
-    pass
+    new_list = gamestat_dict['dice_list']
+    position = int(gamestat_dict['semaphore'])
+    if gamestat_dict['four_kind'][position] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0
+    for x in range(1,7):
+        if new_list.count(x) >= 4:
+            y = x
+            break
+    if y > 0:
+        gamestat_dict['four_kind'][position] = sum(new_list)
+    else:
+        gamestat_dict['four_kind'][position] = 0    
+    gamestat_dict['try_roll'] = 0
+    gamestat_dict['dice_list'] = []
+    next_player()
 
 def full_hous():
-    pass
+    new_list = gamestat_dict['dice_list']
+    position = int(gamestat_dict['semaphore'])
+    if gamestat_dict['full_hous'][position] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    y = 0
+    z = 0
+    for x in range(1,7):
+        if new_list.count(x) == 3:
+            y = x
+        if new_list.count(x) == 2:
+            z = x       
+    if y > 0 and z > 0:
+        gamestat_dict['full_hous'][position] = 25
+    else:
+        gamestat_dict['full_hous'][position] = 0    
+    gamestat_dict['try_roll'] = 0
+    gamestat_dict['dice_list'] = []
+    next_player()
 
 def small_straight():
     pass
