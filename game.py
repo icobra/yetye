@@ -8,13 +8,13 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.6")
+print("Yet Yahtzee version 0.7")
 
 # Important variable
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
-    'dice_list':[6,6,6,6,6],
+    'dice_list':[],
     'ones': [None, None],
     'twos': [None, None],
     'threes': [None, None],
@@ -107,23 +107,22 @@ def board():
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
     print("Current dice: {}".format (gamestat_dict['dice_list']))
 
-def check_it(check_number, gdict = gamestat_dict):
-    print(check_number)
+def check_it(check_number):
     check_dict = {"1": 'ones',"2": 'twos',"3": 'threes',
                  "4":'fours',"5": 'fives',"6": 'sixes'}
     key_word = check_dict[str(check_number)]
     position = int(gamestat_dict['semaphore'])             
-    if gdict[key_word][position] != None:
+    if gamestat_dict[key_word][position] != None:
         print("Sorry, but this field is not empty.")
         return
     y = 0    
-    for x in gdict['dice_list']:
+    for x in gamestat_dict['dice_list']:
         if x == check_number:
             y += 1
     if y >= 3:
-        gdict[key_word][position] = 3 * check_number
+        gamestat_dict[key_word][position] = 3 * check_number
     else:
-        gdict[key_word][position] = 0
+        gamestat_dict[key_word][position] = 0
     next_player()
 
 def three_of_kind():
@@ -168,13 +167,18 @@ def full_hous():
         return
     y = 0
     z = 0
+    k = 0
     for x in range(1,7):
         if new_list.count(x) == 3:
             y = x
         if new_list.count(x) == 2:
-            z = x       
+            z = x
+        if new_list.count(x) == 5:
+            k = 5           
     if y > 0 and z > 0:
         gamestat_dict['full_hous'][position] = 25
+    elif k == 5:
+        gamestat_dict['full_hous'][position] = 25       
     else:
         gamestat_dict['full_hous'][position] = 0    
     next_player()
@@ -201,22 +205,22 @@ def yahtzee():
         gamestat_dict['yacht'][position] = 0
     next_player()
 
-def chance(gdict = gamestat_dict):
+def chance():
     position = int(gamestat_dict['semaphore'])
-    if gdict['chance'][position] != None:
+    if gamestat_dict['chance'][position] != None:
         print("Sorry, but this field is not empty.")
         return
     y = 0    
-    for x in gdict['dice_list']:
+    for x in gamestat_dict['dice_list']:
         y += x
-    gdict['chance'][position] = y
+    gamestat_dict['chance'][position] = y
     next_player()    
 
 def quit():
     print("Thank you. Take a good day.")
     exit()
 
-def put_aside(gdict = gamestat_dict):
+def put_aside():
     #Put aside some dice if possible
     hold_dice = gamestat_dict['dice_list']
     x = len(hold_dice)
@@ -242,9 +246,9 @@ def put_aside(gdict = gamestat_dict):
     else:
         print("You can't hold something.")    
 
-def roll_dice6d(gdict = gamestat_dict):
+def roll_dice6d():
     #Game dice 6d
-    number = 5 - len(gdict['dice_list'])
+    number = 5 - len(gamestat_dict['dice_list'])
     try_roll = gdict['try_roll']
     print("Roll the dices...")
     new_list = []
@@ -253,9 +257,9 @@ def roll_dice6d(gdict = gamestat_dict):
         new_list.append(dice_number)
     print(new_list)
     try_roll += 1
-    gdict['try_roll'] = try_roll
-    gdict['dice_list'] = gdict['dice_list'] + new_list
-    print(gdict['dice_list'])
+    gamestat_dict['try_roll'] = try_roll
+    gamestat_dict['dice_list'] = gamestat_dict['dice_list'] + new_list
+    print(gamestat_dict['dice_list'])
     print(try_roll)
 
 def next_player():
@@ -302,7 +306,6 @@ while True:
         else:
             print(choice)
             choice = action_dict[choice]
-            # board()
             choice()
             board()
     elif choice in ['1', '2', '3', '4', '5', '6']:
@@ -313,7 +316,6 @@ while True:
     elif choice in action_dict.keys():
         print(choice)
         choice = action_dict[choice]
-        board()
         choice()
         board()
     else:
