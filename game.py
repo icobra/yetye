@@ -259,8 +259,8 @@ def roll_dice6d(gdict = gamestat_dict):
     print(try_roll)
 
 def next_player():
-    gdict['try_roll'] = 0
-    gdict['dice_list'] = []    
+    gamestat_dict['try_roll'] = 0
+    gamestat_dict['dice_list'] = []    
     if gamestat_dict['semaphore'] == 0:
         gamestat_dict['semaphore'] = 1
     else:
