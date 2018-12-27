@@ -14,7 +14,7 @@ print("Yet Yahtzee version 0.75")
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
-    'dice_list':[],
+    'dice_list':[2,4,3,5,6],
     'ones': [None, None],
     'twos': [None, None],
     'threes': [None, None],
@@ -185,6 +185,9 @@ def full_hous():
 
 def small_straight():
     position = int(gamestat_dict['semaphore'])
+    if gamestat_dict['sstraight'][position] != None:
+        print("Sorry, but this field is not empty.")
+        return    
     new_list = gamestat_dict['dice_list']
     new_list = sorted(new_list)
     new_list.pop()
@@ -217,7 +220,25 @@ def small_straight():
     next_player()                         
 
 def large_straight():
-    pass
+    position = int(gamestat_dict['semaphore'])
+    if gamestat_dict['lstraight'][position] != None:
+        print("Sorry, but this field is not empty.")
+        return
+    new_list = gamestat_dict['dice_list']
+    new_list = sorted(new_list)
+    y = new_list[0]
+    new_list.pop(0)
+    for x in new_list:
+        if x == y + 1:
+            y += 1
+        else:
+            y = 0
+            break
+    if y > 0:
+        gamestat_dict['lstraight'][position] = 40
+    else:
+        gamestat_dict['lstraight'][position] = 0
+    next_player()  
 
 def yahtzee():
     position = int(gamestat_dict['semaphore'])
@@ -279,7 +300,7 @@ def put_aside():
 def roll_dice6d():
     #Game dice 6d
     number = 5 - len(gamestat_dict['dice_list'])
-    try_roll = gdict['try_roll']
+    try_roll = gamestat_dict['try_roll']
     print("Roll the dices...")
     new_list = []
     for i in range(0, number):
