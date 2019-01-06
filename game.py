@@ -8,7 +8,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.8")
+print("Yet Yahtzee version 0.9")
 
 # Important variable
 gamestat_dict = {
@@ -103,7 +103,7 @@ def board():
     print("(Y)Yahtzee               %s            %s" % (gamestat_dict['yacht'][0], gamestat_dict['yacht'][1]))
     print("(C)Chance                %s            %s" % (gamestat_dict['chance'][0], gamestat_dict['chance'][1]))
     print("")
-    print("Total: ")
+    print("Total:                   %s            %s" % (gamestat_dict['total'][0], gamestat_dict['total'][1]))
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
     print("Current dice: {}".format (gamestat_dict['dice_list']))
 
@@ -315,29 +315,39 @@ def roll_dice6d():
 
 def bonus():
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['bonus'][position] != None:
+    if gamestat_dict['bonus'][position] is not None:
         return
     bonus_sum = 0
     position = int(gamestat_dict['semaphore'])
     bonus_list = ['three_kind','four_kind','full_house', 'sstraight',
                 'lstraight', 'yacht', 'chance']    
     for num in bonus_list:
-        if gamestat_dict[num][position] != None:
+        if gamestat_dict[num][position]:
             bonus_sum += int(gamestat_dict[num][position]) 
     if bonus_sum > 63:
         gamestat_dict['bonus'][position] = 35     
 
+def total():
+    position = int(gamestat_dict['semaphore'])
+    position = int(gamestat_dict['semaphore'])
+    total_sum = 0
+    full_list = ['ones', 'twos', 'threes','fours', 'fives','sixes',
+                'bonus','three_kind','four_kind','full_house', 'sstraight',
+                'lstraight', 'yacht', 'chance']    
+    for num in full_list:
+        if gamestat_dict[num][position]:
+            total_sum += int(gamestat_dict[num][position]) 
+    gamestat_dict['total'][position] = total_sum
+
 def next_player():
     bonus()
+    total()
     gamestat_dict['try_roll'] = 0
     gamestat_dict['dice_list'] = []    
     if gamestat_dict['semaphore'] == 0:
         gamestat_dict['semaphore'] = 1
     else:
         gamestat_dict['semaphore'] = 0
-
-def total():
-    pass
 
 action_dict = {'1': check_it,
                 '2': check_it,
