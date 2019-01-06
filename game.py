@@ -8,7 +8,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.9")
+print("Yet Yahtzee version 0.95")
 
 # Important variable
 gamestat_dict = {
@@ -189,7 +189,7 @@ def small_straight():
         print("Sorry, but this field is not empty.")
         return    
     new_list = gamestat_dict['dice_list']
-    new_list = sorted(new_list)
+    new_list = sorted(set(new_list))
     new_list.pop()
     y = new_list[0]
     new_list.pop(0)
@@ -203,7 +203,7 @@ def small_straight():
         gamestat_dict['sstraight'][position] = 30
     else:
         new_list = gamestat_dict['dice_list']
-        new_list = sorted(new_list)
+        new_list = sorted(set(new_list))
         new_list.pop(0)
         y = new_list[0]
         new_list.pop(0)
