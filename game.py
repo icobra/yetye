@@ -8,13 +8,13 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.75")
+print("Yet Yahtzee version 0.8")
 
 # Important variable
 gamestat_dict = {
     'semaphore': 0,
     'try_roll': 0,
-    'dice_list':[2,4,3,5,6],
+    'dice_list':[],
     'ones': [None, None],
     'twos': [None, None],
     'threes': [None, None],
@@ -24,7 +24,7 @@ gamestat_dict = {
     'bonus': [None, None],
     'three_kind': [None, None],
     'four_kind': [None, None],
-    'full_hous': [None, None],
+    'full_house': [None, None],
     'sstraight': [None, None],
     'lstraight': [None, None],
     'yacht': [None, None],
@@ -60,7 +60,7 @@ Fives - пятерки, если три, то результат 15 очков, 
 
 Sixes - шестерки, если три, то результат 18 очков, иначе ноль
 
-Bonus - начисляется, если в нижнем поле больше 63 очков, иначе ноль
+Bonus - в 35 очков начисляется, если в нижнем поле больше 63 очков, иначе ноль
 
 Нижнее поле:
 (При несоблюдении условий записывается 0)
@@ -69,7 +69,7 @@ Three of a Kind - сумма трех одинаковых плюс сумма �
 
 Four of a Kind - сумма четырех одинаковых плюс сумма остальных кубиков
 
-Full Hous - 25 очков, три одинаковых плюс два одинаковых кубика
+Full House - 25 очков, три одинаковых плюс два одинаковых кубика
 
 Small Straight - 30 очков, выпадает 1-2-3-4, 2-3-4-5 или 3-4-5-6
 
@@ -97,7 +97,7 @@ def board():
     print("")
     print("(T)Three of a kind       %s            %s" % (gamestat_dict['three_kind'][0], gamestat_dict['three_kind'][1]))
     print("(F)Four of a kind        %s            %s" % (gamestat_dict['four_kind'][0], gamestat_dict['four_kind'][1]))
-    print("(H)Full Hous             %s            %s" % (gamestat_dict['full_hous'][0], gamestat_dict['full_hous'][1]))
+    print("(H)Full House            %s            %s" % (gamestat_dict['full_house'][0], gamestat_dict['full_house'][1]))
     print("(S)Small Straight        %s            %s" % (gamestat_dict['sstraight'][0], gamestat_dict['sstraight'][1]))
     print("(L)Large Straight        %s            %s" % (gamestat_dict['lstraight'][0], gamestat_dict['lstraight'][1]))
     print("(Y)Yahtzee               %s            %s" % (gamestat_dict['yacht'][0], gamestat_dict['yacht'][1]))
@@ -159,10 +159,10 @@ def four_of_kind():
         gamestat_dict['four_kind'][position] = 0    
     next_player()
 
-def full_hous():
+def full_house():
     new_list = gamestat_dict['dice_list']
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['full_hous'][position] != None:
+    if gamestat_dict['full_house'][position] != None:
         print("Sorry, but this field is not empty.")
         return
     y = 0
@@ -176,11 +176,11 @@ def full_hous():
         if new_list.count(x) == 5:
             k = 5           
     if y > 0 and z > 0:
-        gamestat_dict['full_hous'][position] = 25
+        gamestat_dict['full_house'][position] = 25
     elif k == 5:
-        gamestat_dict['full_hous'][position] = 25       
+        gamestat_dict['full_house'][position] = 25       
     else:
-        gamestat_dict['full_hous'][position] = 0    
+        gamestat_dict['full_house'][position] = 0    
     next_player()
 
 def small_straight():
@@ -313,7 +313,22 @@ def roll_dice6d():
     print(gamestat_dict['dice_list'])
     print(try_roll)
 
+def bonus():
+    position = int(gamestat_dict['semaphore'])
+    if gamestat_dict['bonus'][position] != None:
+        return
+    bonus_sum = 0
+    position = int(gamestat_dict['semaphore'])
+    bonus_list = ['three_kind','four_kind','full_house', 'sstraight',
+                'lstraight', 'yacht', 'chance']    
+    for num in bonus_list:
+        if gamestat_dict[num][position] != None:
+            bonus_sum += int(gamestat_dict[num][position]) 
+    if bonus_sum > 63:
+        gamestat_dict['bonus'][position] = 35     
+
 def next_player():
+    bonus()
     gamestat_dict['try_roll'] = 0
     gamestat_dict['dice_list'] = []    
     if gamestat_dict['semaphore'] == 0:
@@ -332,7 +347,7 @@ action_dict = {'1': check_it,
                 '6': check_it,
                 'T': three_of_kind,
                 'F': four_of_kind,
-                'H': full_hous,
+                'H': full_house,
                 'S': small_straight,
                 'L': large_straight,
                 'Y': yahtzee,
