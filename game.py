@@ -81,8 +81,7 @@ Chance - сумма выпавших кубиков, любая комбинац
 
         """)
 
-def show_board(gamedict: dict = gamestat_dict) -> None:
-    board = gamedict
+def show_board(board: dict = gamestat_dict) -> None:
     # Main screen
     if board['semaphore'] == 0:
         print("name                 *Player1     Player2")
@@ -108,19 +107,20 @@ def show_board(gamedict: dict = gamestat_dict) -> None:
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice  Try %d/3" % board['try_roll'])
     print("Current dice: {}".format(board['dice_list']))
 
-def check_it(check_number):
-    check_dict = {"1": 'ones',"2": 'twos',"3": 'threes',
-                 "4":'fours',"5": 'fives',"6": 'sixes'}
+def check_top_field(check_number: int) -> None:
+    # Check top field condition
+    check_dict = {"1":'ones', "2":'twos', "3": 'threes',
+                  "4":'fours', "5":'fives', "6": 'sixes'}
     key_word = check_dict[str(check_number)]
-    position = int(gamestat_dict['semaphore'])             
+    position = int(gamestat_dict['semaphore'])           
     if gamestat_dict[key_word][position] != None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0    
-    for x in gamestat_dict['dice_list']:
-        if x == check_number:
-            y += 1
-    if y >= 3:
+    dice_repeats = 0
+    for dice in gamestat_dict['dice_list']:
+        if dice == check_number:
+            dice_repeats += 1
+    if dice_repeats >= 3:
         gamestat_dict[key_word][position] = 3 * check_number
     else:
         gamestat_dict[key_word][position] = 0
@@ -350,12 +350,12 @@ def next_player():
     else:
         gamestat_dict['semaphore'] = 0
 
-action_dict = {'1': check_it,
-                '2': check_it,
-                '3': check_it,
-                '4': check_it,
-                '5': check_it,
-                '6': check_it,
+action_dict = {'1': check_top_field,
+                '2': check_top_field,
+                '3': check_top_field,
+                '4': check_top_field,
+                '5': check_top_field,
+                '6': check_top_field,
                 'T': three_of_kind,
                 'F': four_of_kind,
                 'H': full_house,
