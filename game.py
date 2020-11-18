@@ -38,7 +38,7 @@ def watch_game_rules():
 
 Игра длиться 13 раундов
 
-В течении раунда делается три броска
+В течении раунда максимально делается три броска
 
 Перебросить не более двух раз можно от 0 до 5 кубиков
 
@@ -81,31 +81,32 @@ Chance - сумма выпавших кубиков, любая комбинац
 
         """)
 
-def board():
+def show_board(gamedict: dict = gamestat_dict) -> None:
+    board = gamedict
     # Main screen
-    if gamestat_dict['semaphore'] == 0:
-        print("name                   *Player1         Player2")
+    if board['semaphore'] == 0:
+        print("name                 *Player1     Player2")
     else:
-        print("name                   Player1         *Player2")
-    print("(1)Ones                  %s            %s" % (gamestat_dict['ones'][0], gamestat_dict['ones'][1]))
-    print("(2)Twos                  %s            %s" % (gamestat_dict['twos'][0], gamestat_dict['twos'][1]))
-    print("(3)Threes                %s            %s" % (gamestat_dict['threes'][0], gamestat_dict['threes'][1]))
-    print("(4)Fours                 %s            %s" % (gamestat_dict['fours'][0], gamestat_dict['fours'][1]))
-    print("(5)Fives                 %s            %s" % (gamestat_dict['fives'][0], gamestat_dict['fives'][1]))
-    print("(6)Sixes                 %s            %s" % (gamestat_dict['sixes'][0], gamestat_dict['sixes'][1]))
-    print("   Bonus                 %s            %s" % (gamestat_dict['bonus'][0], gamestat_dict['bonus'][1]))
+        print("name                 Player1     *Player2")
+    print("(1)Ones                %s        %s" % (board['ones'][0], board['ones'][1]))
+    print("(2)Twos                %s        %s" % (board['twos'][0], board['twos'][1]))
+    print("(3)Threes              %s        %s" % (board['threes'][0], board['threes'][1]))
+    print("(4)Fours               %s        %s" % (board['fours'][0], board['fours'][1]))
+    print("(5)Fives               %s        %s" % (board['fives'][0], board['fives'][1]))
+    print("(6)Sixes               %s        %s" % (board['sixes'][0], board['sixes'][1]))
+    print("   Bonus               %s        %s" % (board['bonus'][0], board['bonus'][1]))
     print("")
-    print("(T)Three of a kind       %s            %s" % (gamestat_dict['three_kind'][0], gamestat_dict['three_kind'][1]))
-    print("(F)Four of a kind        %s            %s" % (gamestat_dict['four_kind'][0], gamestat_dict['four_kind'][1]))
-    print("(H)Full House            %s            %s" % (gamestat_dict['full_house'][0], gamestat_dict['full_house'][1]))
-    print("(S)Small Straight        %s            %s" % (gamestat_dict['sstraight'][0], gamestat_dict['sstraight'][1]))
-    print("(L)Large Straight        %s            %s" % (gamestat_dict['lstraight'][0], gamestat_dict['lstraight'][1]))
-    print("(Y)Yahtzee               %s            %s" % (gamestat_dict['yacht'][0], gamestat_dict['yacht'][1]))
-    print("(C)Chance                %s            %s" % (gamestat_dict['chance'][0], gamestat_dict['chance'][1]))
+    print("(T)Three of a kind     %s        %s" % (board['three_kind'][0], board['three_kind'][1]))
+    print("(F)Four of a kind      %s        %s" % (board['four_kind'][0], board['four_kind'][1]))
+    print("(H)Full House          %s        %s" % (board['full_house'][0], board['full_house'][1]))
+    print("(S)Small Straight      %s        %s" % (board['sstraight'][0], board['sstraight'][1]))
+    print("(L)Large Straight      %s        %s" % (board['lstraight'][0], board['lstraight'][1]))
+    print("(Y)Yahtzee             %s        %s" % (board['yacht'][0], board['yacht'][1]))
+    print("(C)Chance              %s        %s" % (board['chance'][0], board['chance'][1]))
     print("")
-    print("Total:                   %s            %s" % (gamestat_dict['total'][0], gamestat_dict['total'][1]))
-    print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice   Try %d/3" % gamestat_dict['try_roll'])
-    print("Current dice: {}".format (gamestat_dict['dice_list']))
+    print("Total:                 %s        %s" % (board['total'][0], board['total'][1]))
+    print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice  Try %d/3" % board['try_roll'])
+    print("Current dice: {}".format(board['dice_list']))
 
 def check_it(check_number):
     check_dict = {"1": 'ones',"2": 'twos',"3": 'threes',
@@ -368,7 +369,7 @@ action_dict = {'1': check_it,
                 'R': roll_dice6d
 }
 
-board()
+show_board()
 while True:
     if gamestat_dict['semaphore'] == 0:
         print("Player1, Make you choice...")
@@ -377,22 +378,22 @@ while True:
     choice = getch().upper()
     if choice == 'R' or choice == 'P': 
         if gamestat_dict['try_roll'] == 3:
-            board()
+            show_board()
             print("Make choice. No more dice rolls this turn.")            
         else:
             print(choice)
             choice = action_dict[choice]
             choice()
-            board()
+            show_board()
     elif choice in ['1', '2', '3', '4', '5', '6']:
         check_number = int(choice)
         choice = action_dict[choice]
         choice(check_number)
-        board()
+        show_board()
     elif choice in action_dict.keys():
         print(choice)
         choice = action_dict[choice]
         choice()
-        board()
+        show_board()
     else:
         print("Enter avalibal command")
