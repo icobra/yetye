@@ -206,9 +206,7 @@ def check_small_straight() -> None:
         if new_list in control_list:
             small_straight = True
     if len(new_list) == 5:
-        new_list_a = new_list.pop()
-        new_list_b = new_list.pop(0)
-        if new_list_a or new_list_b in control_list:
+        if new_list[:-1] in control_list or new_list[1:] in control_list:
             small_straight = True
     if small_straight:
         gamestat_dict['sstraight'][position] = 30
@@ -269,7 +267,7 @@ def quit_to_os():
     sys.exit()
 
 def put_aside():
-    #Put aside some dice if possible
+    """Put aside some dice if possible"""
     hold_dice = gamestat_dict['dice_list']
     x = len(hold_dice)
     if x > 0:
@@ -279,14 +277,15 @@ def put_aside():
         number_list = list(range(1, x))
         print("Number of dices:  {}".format(number_list))
         print("Enter the numbers of the dices through the space to remove them.")
-        user_choice = (input("Enter the space - hold all dices....")).strip()
+        user_choice = (input("Enter the space bar - hold all dices....")).strip()
         user_choice = user_choice.split(" ")
         print(user_choice)
         user_choice = sorted(user_choice)
         print(user_choice)
         y = len(user_choice)
-        if y > x or y == 0:
+        if y > x or user_choice == ['']:
             print("You can't remove more dices than you have.")
+            return
         while y > 0:
             hold_dice.pop((int(user_choice.pop()))-1)
             y -= 1
@@ -295,7 +294,7 @@ def put_aside():
         print("You can't hold something.")
 
 def roll_dice6d():
-    #Game dice 6d
+    """Game dice 6d"""
     number = 5 - len(gamestat_dict['dice_list'])
     try_roll = gamestat_dict['try_roll']
     print("Roll the dices...")
@@ -311,6 +310,7 @@ def roll_dice6d():
     print(try_roll)
 
 def bonus():
+    """Count bonus"""
     position = int(gamestat_dict['semaphore'])
     if gamestat_dict['bonus'][position] is not None:
         return
@@ -325,6 +325,7 @@ def bonus():
         gamestat_dict['bonus'][position] = 35
 
 def total():
+    """Count total"""
     position = int(gamestat_dict['semaphore'])
     position = int(gamestat_dict['semaphore'])
     total_sum = 0
@@ -337,6 +338,7 @@ def total():
     gamestat_dict['total'][position] = total_sum
 
 def next_player():
+    """turn move to next player"""
     bonus()
     total()
     gamestat_dict['try_roll'] = 0
