@@ -8,7 +8,7 @@ Sorry some txt on Ru only
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.95")
+print("Yet Yahtzee version 0.96")
 
 # Important variable
 gamestat_dict = {
@@ -215,22 +215,19 @@ def check_small_straight() -> None:
         gamestat_dict['sstraight'][position] = 0
     next_player()
 
-def large_straight():
+def check_large_straight() -> None:
+    """Check large_straight condition"""
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['lstraight'][position] != None:
+    if gamestat_dict['lstraight'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
+    large_straight = False
     new_list = gamestat_dict['dice_list']
     new_list = sorted(new_list)
-    y = new_list[0]
-    new_list.pop(0)
-    for x in new_list:
-        if x == y + 1:
-            y += 1
-        else:
-            y = 0
-            break
-    if y > 0:
+    control_list = [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6]]
+    if new_list in control_list:
+        large_straight = True
+    if large_straight:
         gamestat_dict['lstraight'][position] = 40
     else:
         gamestat_dict['lstraight'][position] = 0
@@ -354,8 +351,8 @@ action_dict = {'1': check_top_field,
                'T': three_of_kind,
                'F': four_of_kind,
                'H': full_house,
-               'S': small_straight,
-               'L': large_straight,
+               'S': check_small_straight,
+               'L': check_large_straight,
                'Y': yahtzee,
                'C': chance,
                'W': watch_game_rules,
