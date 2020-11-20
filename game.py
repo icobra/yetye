@@ -233,17 +233,18 @@ def check_large_straight() -> None:
         gamestat_dict['lstraight'][position] = 0
     next_player()
 
-def yahtzee():
+def check_yahtzee():
+    """Check yahtzee condition"""
     position = int(gamestat_dict['semaphore'])
-    check_number = gamestat_dict['dice_list'][0]
-    if gamestat_dict['yacht'][position] != None:
+    if gamestat_dict['yacht'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0
-    for x in gamestat_dict['dice_list']:
-        if x == check_number:
-            y += 1
-    if y == 5:
+    yahtzee = False
+    new_list = gamestat_dict['dice_list']
+    new_list = sorted(set(new_list))
+    if len(new_list) == 1:
+        yahtzee = True
+    if yahtzee:
         gamestat_dict['yacht'][position] = 50
     else:
         gamestat_dict['yacht'][position] = 0
