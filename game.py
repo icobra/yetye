@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-Yet Yahtzee
+Yet Yahtzee - board game
 Sorry some txt on Ru only
 """
 
@@ -33,7 +33,8 @@ gamestat_dict = {
 }
 
 def watch_game_rules():
-    print("""
+    """Show game rules to user"""
+    rules = '''
                    Правила игры в Yahtzee.
 
 Игра длиться 13 раундов
@@ -79,10 +80,13 @@ Yahtzee - 50 очков, 5 одинаковых кубиков
 
 Chance - сумма выпавших кубиков, любая комбинация.
 
-        """)
+        '''
+    print(rules)
+    print("Нажмите любую клавишу для продолжения")
+    getch()
 
-def show_board(board: dict = gamestat_dict) -> None:
-    # Main screen
+def show_board(board: dict) -> None:
+    """ Main screen,show board to user """
     if board['semaphore'] == 0:
         print("name                 *Player1     Player2")
     else:
@@ -108,11 +112,11 @@ def show_board(board: dict = gamestat_dict) -> None:
     print("Current dice: {}".format(board['dice_list']))
 
 def check_top_field(check_number: int) -> None:
-    # Check top field condition
+    """Check top field condition"""
     check_dict = {"1":'ones', "2":'twos', "3": 'threes',
                   "4":'fours', "5":'fives', "6": 'sixes'}
     key_word = check_dict[str(check_number)]
-    position = int(gamestat_dict['semaphore'])           
+    position = int(gamestat_dict['semaphore'])
     if gamestat_dict[key_word][position] != None:
         print("Sorry, but this field is not empty.")
         return
@@ -133,14 +137,14 @@ def three_of_kind():
         print("Sorry, but this field is not empty.")
         return
     y = 0
-    for x in range(1,7):
+    for x in range(1, 7):
         if new_list.count(x) >= 3:
             y = x
-            break       
+            break
     if y > 0:
         gamestat_dict['three_kind'][position] = sum(new_list)
     else:
-        gamestat_dict['three_kind'][position] = 0    
+        gamestat_dict['three_kind'][position] = 0
     next_player()
 
 def four_of_kind():
@@ -150,14 +154,14 @@ def four_of_kind():
         print("Sorry, but this field is not empty.")
         return
     y = 0
-    for x in range(1,7):
+    for x in range(1, 7):
         if new_list.count(x) >= 4:
             y = x
             break
     if y > 0:
         gamestat_dict['four_kind'][position] = sum(new_list)
     else:
-        gamestat_dict['four_kind'][position] = 0    
+        gamestat_dict['four_kind'][position] = 0
     next_player()
 
 def full_house():
@@ -169,26 +173,26 @@ def full_house():
     y = 0
     z = 0
     k = 0
-    for x in range(1,7):
+    for x in range(1, 7):
         if new_list.count(x) == 3:
             y = x
         if new_list.count(x) == 2:
             z = x
         if new_list.count(x) == 5:
-            k = 5           
+            k = 5
     if y > 0 and z > 0:
         gamestat_dict['full_house'][position] = 25
     elif k == 5:
-        gamestat_dict['full_house'][position] = 25       
+        gamestat_dict['full_house'][position] = 25
     else:
-        gamestat_dict['full_house'][position] = 0    
+        gamestat_dict['full_house'][position] = 0
     next_player()
 
 def small_straight():
     position = int(gamestat_dict['semaphore'])
     if gamestat_dict['sstraight'][position] != None:
         print("Sorry, but this field is not empty.")
-        return    
+        return
     new_list = gamestat_dict['dice_list']
     new_list = sorted(set(new_list))
     new_list.pop()
@@ -216,9 +220,9 @@ def small_straight():
                 break
         if y > 0:
             gamestat_dict['sstraight'][position] = 30
-        else:    
+        else:
             gamestat_dict['sstraight'][position] = 0
-    next_player()                         
+    next_player()
 
 def large_straight():
     position = int(gamestat_dict['semaphore'])
@@ -239,15 +243,15 @@ def large_straight():
         gamestat_dict['lstraight'][position] = 40
     else:
         gamestat_dict['lstraight'][position] = 0
-    next_player()  
+    next_player()
 
 def yahtzee():
     position = int(gamestat_dict['semaphore'])
-    check_number = gamestat_dict['dice_list'][0]             
+    check_number = gamestat_dict['dice_list'][0]
     if gamestat_dict['yacht'][position] != None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0    
+    y = 0
     for x in gamestat_dict['dice_list']:
         if x == check_number:
             y += 1
@@ -262,13 +266,13 @@ def chance():
     if gamestat_dict['chance'][position] != None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0    
+    y = 0
     for x in gamestat_dict['dice_list']:
         y += x
     gamestat_dict['chance'][position] = y
-    next_player()    
+    next_player()
 
-def quit():
+def quit_to_os():
     print("Thank you. Take a good day.")
     exit()
 
@@ -278,10 +282,10 @@ def put_aside():
     x = len(hold_dice)
     if x > 0:
         print("\nYou can put aside some dice.\n")
-        print("Current dices:    {}".format (hold_dice))
+        print("Current dices:    {}".format(hold_dice))
         x += 1
         number_list = list(range(1, x))
-        print("Number of dices:  {}".format (number_list))
+        print("Number of dices:  {}".format(number_list))
         print("Enter the numbers of the dices through the space to remove them.")
         user_choice = (input("Enter the space - hold all dices....")).strip()
         user_choice = user_choice.split(" ")
@@ -296,7 +300,7 @@ def put_aside():
             y -= 1
         print(hold_dice)
     else:
-        print("You can't hold something.")    
+        print("You can't hold something.")
 
 def roll_dice6d():
     #Game dice 6d
@@ -305,7 +309,7 @@ def roll_dice6d():
     print("Roll the dices...")
     new_list = []
     for i in range(0, number):
-        dice_number = randint(1,6)
+        dice_number = randint(1, 6)
         new_list.append(dice_number)
     print(new_list)
     try_roll += 1
@@ -320,80 +324,79 @@ def bonus():
         return
     bonus_sum = 0
     position = int(gamestat_dict['semaphore'])
-    bonus_list = ['three_kind','four_kind','full_house', 'sstraight',
-                'lstraight', 'yacht', 'chance']    
+    bonus_list = ['three_kind', 'four_kind', 'full_house', 'sstraight',
+                  'lstraight', 'yacht', 'chance']
     for num in bonus_list:
         if gamestat_dict[num][position]:
-            bonus_sum += int(gamestat_dict[num][position]) 
+            bonus_sum += int(gamestat_dict[num][position])
     if bonus_sum > 63:
-        gamestat_dict['bonus'][position] = 35     
+        gamestat_dict['bonus'][position] = 35
 
 def total():
     position = int(gamestat_dict['semaphore'])
     position = int(gamestat_dict['semaphore'])
     total_sum = 0
-    full_list = ['ones', 'twos', 'threes','fours', 'fives','sixes',
-                'bonus','three_kind','four_kind','full_house', 'sstraight',
-                'lstraight', 'yacht', 'chance']    
+    full_list = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes',
+                 'bonus', 'three_kind', 'four_kind', 'full_house', 'sstraight',
+                 'lstraight', 'yacht', 'chance']
     for num in full_list:
         if gamestat_dict[num][position]:
-            total_sum += int(gamestat_dict[num][position]) 
+            total_sum += int(gamestat_dict[num][position])
     gamestat_dict['total'][position] = total_sum
 
 def next_player():
     bonus()
     total()
     gamestat_dict['try_roll'] = 0
-    gamestat_dict['dice_list'] = []    
+    gamestat_dict['dice_list'] = []
     if gamestat_dict['semaphore'] == 0:
         gamestat_dict['semaphore'] = 1
     else:
         gamestat_dict['semaphore'] = 0
 
 action_dict = {'1': check_top_field,
-                '2': check_top_field,
-                '3': check_top_field,
-                '4': check_top_field,
-                '5': check_top_field,
-                '6': check_top_field,
-                'T': three_of_kind,
-                'F': four_of_kind,
-                'H': full_house,
-                'S': small_straight,
-                'L': large_straight,
-                'Y': yahtzee,
-                'C': chance,
-                'W': watch_game_rules,
-                'Q': quit,
-                'P': put_aside,
-                'R': roll_dice6d
-}
+               '2': check_top_field,
+               '3': check_top_field,
+               '4': check_top_field,
+               '5': check_top_field,
+               '6': check_top_field,
+               'T': three_of_kind,
+               'F': four_of_kind,
+               'H': full_house,
+               'S': small_straight,
+               'L': large_straight,
+               'Y': yahtzee,
+               'C': chance,
+               'W': watch_game_rules,
+               'Q': quit_to_os,
+               'P': put_aside,
+               'R': roll_dice6d}
 
-show_board()
+show_board(gamestat_dict)
 while True:
     if gamestat_dict['semaphore'] == 0:
         print("Player1, Make you choice...")
     else:
         print("Player2, Make you choice...")
     choice = getch().upper()
-    if choice == 'R' or choice == 'P': 
+    if choice == 'R' or choice == 'P':
         if gamestat_dict['try_roll'] == 3:
-            show_board()
-            print("Make choice. No more dice rolls this turn.")            
+            show_board(gamestat_dict)
+            print("Make choice. No more dice rolls this turn.")
         else:
             print(choice)
             choice = action_dict[choice]
             choice()
-            show_board()
+            show_board(gamestat_dict)
     elif choice in ['1', '2', '3', '4', '5', '6']:
         check_number = int(choice)
         choice = action_dict[choice]
         choice(check_number)
-        show_board()
+        show_board(gamestat_dict)
     elif choice in action_dict.keys():
         print(choice)
         choice = action_dict[choice]
         choice()
-        show_board()
+        show_board(gamestat_dict)
     else:
         print("Enter avalibal command")
