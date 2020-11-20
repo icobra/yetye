@@ -5,6 +5,7 @@ Yet Yahtzee - board game
 Sorry some txt on Ru only
 """
 
+import sys
 from random import randint
 from getch import getch
 
@@ -250,20 +251,22 @@ def check_yahtzee():
         gamestat_dict['yacht'][position] = 0
     next_player()
 
-def chance():
+def check_chance():
+    """Check chance condition"""
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['chance'][position] != None:
+    if gamestat_dict['chance'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0
-    for x in gamestat_dict['dice_list']:
-        y += x
-    gamestat_dict['chance'][position] = y
+    dice_sum = 0
+    for dice_number in gamestat_dict['dice_list']:
+        dice_sum += dice_number
+    gamestat_dict['chance'][position] = dice_sum
     next_player()
 
 def quit_to_os():
+    """Exit from game"""
     print("Thank you. Take a good day.")
-    exit()
+    sys.exit()
 
 def put_aside():
     #Put aside some dice if possible
@@ -354,8 +357,8 @@ action_dict = {'1': check_top_field,
                'H': full_house,
                'S': check_small_straight,
                'L': check_large_straight,
-               'Y': yahtzee,
-               'C': chance,
+               'Y': check_yahtzee,
+               'C': check_chance,
                'W': watch_game_rules,
                'Q': quit_to_os,
                'P': put_aside,
