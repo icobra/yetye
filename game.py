@@ -70,7 +70,7 @@ Three of a Kind - сумма трех одинаковых плюс сумма �
 
 Four of a Kind - сумма четырех одинаковых плюс сумма остальных кубиков
 
-Full House - 25 очков, три одинаковых плюс два одинаковых кубика
+Full House - 25 очков, три одинаковых плюс два одинаковых кубика (5 одинаковых кубиков тоже можно)
 
 Small Straight - 30 очков, выпадает 1-2-3-4, 2-3-4-5 или 3-4-5-6
 
@@ -111,84 +111,88 @@ def show_board(board: dict) -> None:
     print("(W)Watch game rules (Q)Quit (P)Put aside (R)Roll the dice  Try %d/3" % board['try_roll'])
     print("Current dice: {}".format(board['dice_list']))
 
-def check_top_field(check_number: int) -> None:
+def check_top_field(dice_number: int) -> None:
     """Check top field condition"""
     check_dict = {"1":'ones', "2":'twos', "3": 'threes',
                   "4":'fours', "5":'fives', "6": 'sixes'}
-    key_word = check_dict[str(check_number)]
+    key_word = check_dict[str(dice_number)]
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict[key_word][position] != None:
+    if gamestat_dict[key_word][position] is not None:
         print("Sorry, but this field is not empty.")
         return
     dice_repeats = 0
     for dice in gamestat_dict['dice_list']:
-        if dice == check_number:
+        if dice == dice_number:
             dice_repeats += 1
     if dice_repeats >= 3:
-        gamestat_dict[key_word][position] = 3 * check_number
+        gamestat_dict[key_word][position] = 3 * dice_number
     else:
         gamestat_dict[key_word][position] = 0
     next_player()
 
-def three_of_kind():
+def three_of_kind() -> None:
+    """Check three of kind condition"""
     new_list = gamestat_dict['dice_list']
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['three_kind'][position] != None:
+    if gamestat_dict['three_kind'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0
-    for x in range(1, 7):
-        if new_list.count(x) >= 3:
-            y = x
+    dice_repeats = 0
+    for dice_number in range(1, 7):
+        if new_list.count(dice_number) >= 3:
+            dice_repeats = dice_number
             break
-    if y > 0:
+    if dice_repeats > 0:
         gamestat_dict['three_kind'][position] = sum(new_list)
     else:
         gamestat_dict['three_kind'][position] = 0
     next_player()
 
-def four_of_kind():
+def four_of_kind() -> None:
+    """Check three of kind condition"""
     new_list = gamestat_dict['dice_list']
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['four_kind'][position] != None:
+    if gamestat_dict['four_kind'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0
-    for x in range(1, 7):
-        if new_list.count(x) >= 4:
-            y = x
+    dice_repeats = 0
+    for dice_number in range(1, 7):
+        if new_list.count(dice_number) >= 4:
+            dice_repeats = dice_number
             break
-    if y > 0:
+    if dice_repeats > 0:
         gamestat_dict['four_kind'][position] = sum(new_list)
     else:
         gamestat_dict['four_kind'][position] = 0
     next_player()
 
 def full_house():
+    """Check full house condition"""
     new_list = gamestat_dict['dice_list']
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['full_house'][position] != None:
+    if gamestat_dict['full_house'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
-    y = 0
-    z = 0
-    k = 0
-    for x in range(1, 7):
-        if new_list.count(x) == 3:
-            y = x
-        if new_list.count(x) == 2:
-            z = x
-        if new_list.count(x) == 5:
-            k = 5
-    if y > 0 and z > 0:
+    three_dice = False
+    two_dice = False
+    five_dice = False
+    for dice_number in range(1, 7):
+        if new_list.count(dice_number) == 3:
+            three_dice = True
+        if new_list.count(dice_number) == 2:
+            two_dice = True
+        if new_list.count(dice_number) == 5:
+            five_dice = True
+    if three_dice and two_dice:
         gamestat_dict['full_house'][position] = 25
-    elif k == 5:
+    elif five_dice:
         gamestat_dict['full_house'][position] = 25
     else:
         gamestat_dict['full_house'][position] = 0
     next_player()
 
 def small_straight():
+    """Check small_straight condition"""
     position = int(gamestat_dict['semaphore'])
     if gamestat_dict['sstraight'][position] != None:
         print("Sorry, but this field is not empty.")
