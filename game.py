@@ -166,7 +166,7 @@ def four_of_kind() -> None:
         gamestat_dict['four_kind'][position] = 0
     next_player()
 
-def full_house():
+def full_house() -> None:
     """Check full house condition"""
     new_list = gamestat_dict['dice_list']
     position = int(gamestat_dict['semaphore'])
@@ -191,41 +191,28 @@ def full_house():
         gamestat_dict['full_house'][position] = 0
     next_player()
 
-def small_straight():
+def check_small_straight() -> None:
     """Check small_straight condition"""
     position = int(gamestat_dict['semaphore'])
-    if gamestat_dict['sstraight'][position] != None:
+    if gamestat_dict['sstraight'][position] is not None:
         print("Sorry, but this field is not empty.")
         return
+    small_straight = False
     new_list = gamestat_dict['dice_list']
     new_list = sorted(set(new_list))
-    new_list.pop()
-    y = new_list[0]
-    new_list.pop(0)
-    for x in new_list:
-        if x == y + 1:
-            y += 1
-        else:
-            y = 0
-            break
-    if y > 0:
+    control_list = [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]]
+    if len(new_list) == 4:
+        if new_list in control_list:
+            small_straight = True
+    if len(new_list) == 5:
+        new_list_a = new_list.pop()
+        new_list_b = new_list.pop(0)
+        if new_list_a or new_list_b in control_list:
+            small_straight = True
+    if small_straight:
         gamestat_dict['sstraight'][position] = 30
     else:
-        new_list = gamestat_dict['dice_list']
-        new_list = sorted(set(new_list))
-        new_list.pop(0)
-        y = new_list[0]
-        new_list.pop(0)
-        for x in new_list:
-            if x == y +1:
-                y += 1
-            else:
-                y = 0
-                break
-        if y > 0:
-            gamestat_dict['sstraight'][position] = 30
-        else:
-            gamestat_dict['sstraight'][position] = 0
+        gamestat_dict['sstraight'][position] = 0
     next_player()
 
 def large_straight():
