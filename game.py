@@ -9,7 +9,7 @@ import sys
 from random import randint
 from getch import getch
 
-print("Yet Yahtzee version 0.96")
+print("Yet Yahtzee version 0.97")
 
 # Important variable
 gamestat_dict = {
@@ -224,12 +224,12 @@ def quit_to_os() -> None:
 def put_aside() -> None:
     """Put aside some dice if possible"""
     hold_dice = gamestat_dict['dice_list']
-    x = len(hold_dice)
-    if x > 0:
+    hold_dice_len = len(hold_dice)
+    if hold_dice_len > 0:
         print("\nYou can put aside some dice.\n")
         print("Current dices:    {}".format(hold_dice))
-        x += 1
-        number_list = list(range(1, x))
+        hold_dice_len += 1
+        number_list = list(range(1, hold_dice_len))
         print("Number of dices:  {}".format(number_list))
         print("Enter the numbers of the dices through the space to remove them.")
         user_choice = (input("Enter the space bar - hold all dices....")).strip()
@@ -237,13 +237,17 @@ def put_aside() -> None:
         print(user_choice)
         user_choice = sorted(user_choice)
         print(user_choice)
-        y = len(user_choice)
-        if y > x or user_choice == ['']:
+        count_dice_outside = len(user_choice)
+        if count_dice_outside > (hold_dice_len - 1) or user_choice == ['']:
             print("You can't remove more dices than you have.")
             return
-        while y > 0:
+        set_user_choice = set(list(map(int, user_choice)))
+        if not set_user_choice.issubset(set(number_list)):
+            print("You can't remove this dice.")
+            return
+        while count_dice_outside > 0:
             hold_dice.pop((int(user_choice.pop()))-1)
-            y -= 1
+            count_dice_outside -= 1
         print(hold_dice)
     else:
         print("You can't hold something.")
