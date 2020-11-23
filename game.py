@@ -33,56 +33,11 @@ gamestat_dict = {
     'total': [None, None],
 }
 
-def watch_game_rules():
+def watch_game_rules(file_name=str("rules_ru.txt")) -> None:
     """Show game rules to user"""
-    rules = '''
-                   Правила игры в Yahtzee.
-
-Игра длиться 13 раундов
-
-В течении раунда максимально делается три броска
-
-Перебросить не более двух раз можно от 0 до 5 кубиков
-
-По окончанию раунда нужно выбрать одну из 13 ячеек для внесения результата.
-
-
-                   Начисление очков в ячейкии.
-Верхнее поле:
-
-Ones - единицы, если три, то результат 3 очка, иначе ноль
-
-Twos - двойки, если три, то результат 6 очков, иначе ноль
-
-Threes - тройки, если три, то результат 9 очков, иначе ноль
-
-Fours - четверки, если три, то результат 12 очков, иначе ноль
-
-Fives - пятерки, если три, то результат 15 очков, иначе ноль
-
-Sixes - шестерки, если три, то результат 18 очков, иначе ноль
-
-Bonus - в 35 очков начисляется, если в нижнем поле больше 63 очков, иначе ноль
-
-Нижнее поле:
-(При несоблюдении условий записывается 0)
-
-Three of a Kind - сумма трех одинаковых плюс сумма остальных кубиков
-
-Four of a Kind - сумма четырех одинаковых плюс сумма остальных кубиков
-
-Full House - 25 очков, три одинаковых плюс два одинаковых кубика (5 одинаковых кубиков тоже можно)
-
-Small Straight - 30 очков, выпадает 1-2-3-4, 2-3-4-5 или 3-4-5-6
-
-Large Straight - 40 очков, выпадает 1-2-3-4-5 или 2-3-4-5-6
-
-Yahtzee - 50 очков, 5 одинаковых кубиков
-
-Chance - сумма выпавших кубиков, любая комбинация.
-
-        '''
-    print(rules)
+    with open(file_name) as rules:
+        for line in rules:
+            print(line, end=' ')
     print("Нажмите любую клавишу для продолжения")
     getch()
 
@@ -232,7 +187,7 @@ def check_large_straight() -> None:
         gamestat_dict['lstraight'][position] = 0
     next_player()
 
-def check_yahtzee():
+def check_yahtzee() -> None:
     """Check yahtzee condition"""
     position = int(gamestat_dict['semaphore'])
     if gamestat_dict['yacht'][position] is not None:
@@ -249,7 +204,7 @@ def check_yahtzee():
         gamestat_dict['yacht'][position] = 0
     next_player()
 
-def check_chance():
+def check_chance() -> None:
     """Check chance condition"""
     position = int(gamestat_dict['semaphore'])
     if gamestat_dict['chance'][position] is not None:
@@ -261,12 +216,12 @@ def check_chance():
     gamestat_dict['chance'][position] = dice_sum
     next_player()
 
-def quit_to_os():
+def quit_to_os() -> None:
     """Exit from game"""
     print("Thank you. Take a good day.")
     sys.exit()
 
-def put_aside():
+def put_aside() -> None:
     """Put aside some dice if possible"""
     hold_dice = gamestat_dict['dice_list']
     x = len(hold_dice)
@@ -293,7 +248,7 @@ def put_aside():
     else:
         print("You can't hold something.")
 
-def roll_dice6d():
+def roll_dice6d() -> None:
     """Game dice 6d"""
     number = 5 - len(gamestat_dict['dice_list'])
     try_roll = gamestat_dict['try_roll']
@@ -309,7 +264,7 @@ def roll_dice6d():
     print(gamestat_dict['dice_list'])
     print(try_roll)
 
-def bonus():
+def bonus() -> None:
     """Count bonus"""
     position = int(gamestat_dict['semaphore'])
     if gamestat_dict['bonus'][position] is not None:
@@ -324,7 +279,7 @@ def bonus():
     if bonus_sum > 63:
         gamestat_dict['bonus'][position] = 35
 
-def total():
+def total() -> None:
     """Count total"""
     position = int(gamestat_dict['semaphore'])
     position = int(gamestat_dict['semaphore'])
@@ -337,7 +292,7 @@ def total():
             total_sum += int(gamestat_dict[num][position])
     gamestat_dict['total'][position] = total_sum
 
-def next_player():
+def next_player() -> None:
     """turn move to next player"""
     bonus()
     total()
